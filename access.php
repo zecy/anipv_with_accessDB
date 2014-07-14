@@ -3,8 +3,8 @@
 
 try {
 
-    $database = "D:\dropbox\Personal Anime Database\padb_be.accdb";
-    $db       = new PDO("Driver={Microsoft Access Driver (*.mdb, *.accdb)}; Dbq = $database; Uid=Admin");
+    $database = "D:\\dropbox\\Personal Anime Database\\padb_be.accdb";
+    $db       = new PDO("Driver={Microsoft Access Driver (*.mdb, *.accdb)}; DBQ = $database; Uid=Admin");
 
     $sql = "SELECT 动画基本信息.原名 FROM 动画基本信息";
 
