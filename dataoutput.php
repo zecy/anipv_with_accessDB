@@ -86,19 +86,19 @@ EOF;
 
         $item       = odbc_result($rsinfo, "obj");
         $value      = odbc_result($rsinfo, "content");
-        $time_start = strtotime(odbc_result($rstime, "re_time_start"));
-        $time_end   = strtotime(odbc_result($rstime, "re_time_end"));
+        $time_start = substr(odbc_result($rstime, "re_time_start"), 11, 5);
+        $time_end   = substr(odbc_result($rstime, "re_time_end"), 11, 5);
 
         If ($value != null) {
             If ($item == "hp") {
                 $nrurl = str_ireplace("#", "", $value);
                 $nrinfo = $nrinfo . "'hp':['" . $nrurl . "'],";
             }
-            ElseIf ($value == "onair") {
+            ElseIf ($item == "onair") {
                 $nrdate = $value;
                 $nrdays = $weekday[date("w", strtotime($nrdate))];
-                $nrtime = date("Y/m/d", $time_start) . "~" . date("Y/m/d", $time_end);
-                $nrinfo = $nrinfo . "'onair':['" . $nrdate . " " . $nrdays . " " . nrtime . "'],";
+                $nrtime = $time_start . "~" . $time_end;
+                $nrinfo = $nrinfo . "'onair':['" . $nrdate . " ÐÇÆÚ" . $nrdays . " " . $nrtime . "'],";
             } Else {
                 $nrinfo = $nrinfo . "'" . $item . "':['" . $value . "'],";
             }
