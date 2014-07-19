@@ -3,120 +3,176 @@
  * Created by PhpStorm.
  * User: zecy
  * Date: 14-7-16
- * Time: ä¸‹åˆ9:37
+ * Time: ÏÂÎç9:37
  */
 
-//Connect to the DataBase
+// Connect to the DataBase
+// Get Anime Name by Onair
 
 $conn = odbc_connect('animedb','','');
-$sql = "SELECT åŠ¨ç”»åŸºæœ¬ä¿¡æ¯.åŸå as name, åŠ¨ç”»åŸºæœ¬ä¿¡æ¯.ç®€ç§° as shrotname, åŠ¨ç”»åŸºæœ¬ä¿¡æ¯.anime_id as id, åŠ¨ç”»åŸºæœ¬ä¿¡æ¯.ç±»å‹ as genre, åŠ¨ç”»åŸºæœ¬ä¿¡æ¯.æ—¶é—´ as oa FROM åŠ¨ç”»åŸºæœ¬ä¿¡æ¯ WHERE ((åŠ¨ç”»åŸºæœ¬ä¿¡æ¯.æ—¶é—´) >= #2014/6/1# and (åŠ¨ç”»åŸºæœ¬ä¿¡æ¯.æ—¶é—´) <= #2014/8/1#)";
+$sql = "SELECT ¶¯»­»ù±¾ĞÅÏ¢.Ô­Ãû as name, ¶¯»­»ù±¾ĞÅÏ¢.¼ò³Æ as shrotname, ¶¯»­»ù±¾ĞÅÏ¢.anime_id as id, ¶¯»­»ù±¾ĞÅÏ¢.ÀàĞÍ as genre, ¶¯»­»ù±¾ĞÅÏ¢.Ê±¼ä as oa FROM ¶¯»­»ù±¾ĞÅÏ¢ WHERE ((¶¯»­»ù±¾ĞÅÏ¢.Ê±¼ä) >= #2014/6/1# and (¶¯»­»ù±¾ĞÅÏ¢.Ê±¼ä) <= #2014/8/1#) ORDER BY ¶¯»­»ù±¾ĞÅÏ¢.Ê±¼ä";
 $rs = odbc_exec($conn, $sql);
 
-/*
-
 #==========================================================================================
-#                             æ ¹æ®æ—¶é—´æå–åŠ¨ç”»åç§°
+#                                    ×é×°ÄÚÈİ
 #==========================================================================================
 
-$sqlname = "SELECT åŠ¨ç”»åŸºæœ¬ä¿¡æ¯.åŸå as name, åŠ¨ç”»åŸºæœ¬ä¿¡æ¯.ç®€ç§° as short, åŠ¨ç”»åŸºæœ¬ä¿¡æ¯.anime_id as id, åŠ¨ç”»åŸºæœ¬ä¿¡æ¯.ç±»å‹ as geren, åŠ¨ç”»åŸºæœ¬ä¿¡æ¯.æ—¶é—´ as time FROM åŠ¨ç”»åŸºæœ¬ä¿¡æ¯ WHERE"
+$alltext = "";
+$weekday = array("ÈÕ","Ò»","¶ş", "Èı", "ËÄ", "Îå", "Áù");
 
-$sqlname = sqlname & "((åŠ¨ç”»åŸºæœ¬ä¿¡æ¯.æ—¶é—´)<=#" & todate & "# and (åŠ¨ç”»åŸºæœ¬ä¿¡æ¯.æ—¶é—´)>=#" & frdate & "#)"
+while (odbc_fetch_row($rs)) {
 
+    $animename  = odbc_result($rs, "name");
+    $subname    = odbc_result($rs, "shrotname");
+    $animecode  = odbc_result($rs, "id");
 
-'==========================================================================================
-'                                    ç»„è£…å†…å®¹
-'==========================================================================================
+    # Çå¿ÕÄÚÈİÈİÆ÷
+    $nrinfo     = "";
+    $nrstaff    = "";
+    $nrcast     = "";
+    $nrstory    = "";
+    $nrcomment  = "";
+    $nrtime     = "";
+    $nrgenre    = "";
 
-sqlname = sqlname + " ORDER BY åŠ¨ç”»åŸºæœ¬ä¿¡æ¯.æ—¶é—´"
+    # ¸÷²¿·Ö²éÑ¯Óï¾ä
 
-$alltext = ""
+    $sqlinfo = <<<EOF
+select '1' as ordinal, 'origintitle' as obj, ¶¯»­»ù±¾ĞÅÏ¢.Ô­Ãû as content from ¶¯»­»ù±¾ĞÅÏ¢ where  ¶¯»­»ù±¾ĞÅÏ¢.anime_id = $animecode
 
-$rsname = odbc_exec($conn, $sqlname);
+union
 
-Do While Not rsname.EOF
-$animename  = odbc_result($rsname, "name");
-$subname    = odbc_result($rsname, "shrot");
-$animecode  = odbc_result($rsname, "id");
+select '2' as ordinal, 'origintype' as obj, ¶¯»­»ù±¾ĞÅÏ¢.Ô­×÷ as content from ¶¯»­»ù±¾ĞÅÏ¢ where  ¶¯»­»ù±¾ĞÅÏ¢.anime_id = $animecode
 
-    # æ¸…ç©ºå†…å®¹å®¹å™¨
-    $nrinfo = ""
-    $nrsec = ""
-    $nrurl = ""
-    $nroriginal = ""
-    $nrweekdays = ""
-    $orityle = ""
+union
 
-    # å„éƒ¨åˆ†æŸ¥è¯¢è¯­å¥
-    $sqlinfo    = "select åŠ¨ç”»åŸºæœ¬ä¿¡æ¯.ä¸­æ–‡ as name , åŠ¨ç”»åŸºæœ¬ä¿¡æ¯.æ—¶é—´ as onair, åŠ¨ç”»åŸºæœ¬ä¿¡æ¯.åŸä½œ as original, åŠ¨ç”»åŸºæœ¬ä¿¡æ¯.ç±»å‹ as genre, åŠ¨ç”»åŸºæœ¬ä¿¡æ¯.å®˜æ–¹ç½‘ç«™ as hpurl from åŠ¨ç”»åŸºæœ¬ä¿¡æ¯ where(åŠ¨ç”»åŸºæœ¬ä¿¡æ¯.anime_id=" & animecode & ")" 'è·å–åŠ¨ç”»åç§°
-    $sqltime    = "select top 1 onair.re_time_start, onair.re_time_end from onair where(onair.anime_id=" & animecode & ")"
+select '3' as ordinal, 'onair' as obj, ¶¯»­»ù±¾ĞÅÏ¢.Ê±¼ä as content from ¶¯»­»ù±¾ĞÅÏ¢ where ¶¯»­»ù±¾ĞÅÏ¢.anime_id = $animecode
 
+union
+
+select '4' as ordinal, 'episodes' as obj, ¶¯»­»ù±¾ĞÅÏ¢.»°Êı as content from ¶¯»­»ù±¾ĞÅÏ¢ where ¶¯»­»ù±¾ĞÅÏ¢.anime_id = $animecode
+
+union
+
+select '5' as ordinal, 'sequel' as obj, ¶¯»­»ù±¾ĞÅÏ¢.ÊÇ·ñĞø×÷ as content from ¶¯»­»ù±¾ĞÅÏ¢ where ¶¯»­»ù±¾ĞÅÏ¢.anime_id = $animecode
+
+union
+
+select '6' as ordinal, 'hp' as obj, ¶¯»­»ù±¾ĞÅÏ¢.¹Ù·½ÍøÕ¾ as content from ¶¯»­»ù±¾ĞÅÏ¢ where ¶¯»­»ù±¾ĞÅÏ¢.anime_id = $animecode
+
+order by ordinal;
+EOF;
+
+    $sqlstaff = "select [staff].staff×é³É as position, [staff].staff³ÉÔ± as member from [staff] where (([staff].anime_id)=" . $animecode . ") order by [Staff].staff_id"; # »ñÈ¡staffĞÅÏ¢
+
+    $sqlcast = "select [Cast].shortname as shortname, [Cast].½ÇÉ«Ãû³Æ£¨Ô­£© as chara, [Cast].CV as cv ,[Cast].anime_id from [Cast] where (([Cast].anime_id)=" . $animecode . ") order by chara_id"; # »ñÈ¡castĞÅÏ¢
+
+    $sqlcomment = "select ¶¯»­»ù±¾ĞÅÏ¢.½éÉÜ as comment from ¶¯»­»ù±¾ĞÅÏ¢ where((¶¯»­»ù±¾ĞÅÏ¢.anime_id)=" . $animecode . ")"; # »ñÈ¡½éÉÜÄÚÈİ
+
+    $sqltime = "select top 1 onair.re_time_start, onair.re_time_end from onair where(onair.anime_id=" . $animecode . ")"; # »ñÈ¡²¥·ÅÊ±¼ä
+
+    $sqlgenre = "select query_AnimeGenre.genre as genre from query_AnimeGenre where(query_AnimeGenre.anime_id=" . $animecode . ")"; #»ñÈ¡ÀàĞÍ
+
+    # ´ò¿ªÊı¾İ¼¯
     $rsinfo     = odbc_exec($conn, $sqlinfo);
     $rstime     = odbc_exec($conn, $sqltime);
+    $rsstaff    = odbc_exec($conn, $sqlstaff);
+    $rscast     = odbc_exec($conn, $sqlcast);
+    $rscomment  = odbc_exec($conn, $sqlcomment);
+    $rsgenre    = odbc_exec($conn, $sqlgenre);
+
+    # »ù±¾ĞÅÏ¢¸ñÊ½
+    while (odbc_fetch_row($rsinfo)) {
+
+        $item       = odbc_result($rsinfo, "obj");
+        $value      = odbc_result($rsinfo, "content");
+        $time_start = strtotime(odbc_result($rstime, "re_time_start"));
+        $time_end   = strtotime(odbc_result($rstime, "re_time_end"));
+
+        If ($value != null) {
+            If ($item == "hp") {
+                $nrurl = str_ireplace("#", "", $value);
+                $nrinfo = $nrinfo . "'hp':['" . $nrurl . "'],";
+            }
+            ElseIf ($value == "onair") {
+                $nrdate = $value;
+                $nrdays = $weekday[date("w", strtotime($nrdate))];
+                $nrtime = date("Y/m/d", $time_start) . "~" . date("Y/m/d", $time_end);
+                $nrinfo = $nrinfo . "'onair':['" . $nrdate . " " . $nrdays . " " . nrtime . "'],";
+            } Else {
+                $nrinfo = $nrinfo . "'" . $item . "':['" . $value . "'],";
+            }
+        }
+//        $rsinfo->Movenext();
+    };
+
+    while (odbc_fetch_row($rsgenre)) {
+        $nrgenre = $nrgenre . odbc_result($rsgenre, "genre") . ",";
+//        $rsgenre->Movenext();
+    };
+
+    $nrgenre = substr($nrgenre, 0, -1);
+
+    $nrinfo = $nrinfo . "'genre':['" . $nrgenre . "']";
 
 
-    #åŸä½œ
-'    Select Case odbc_result($rsinfo, "original")
-'
-'        Case "GALGAME"
-'            oritype = "game"
-'
-'        Case "æ¸¸æˆ"
-'            oritype = "game"
-'
-'        Case "æ¼«ç”»"
-'            oritype = "comic"
-'
-'        Case "TVåŸåˆ›"
-'            oritype = "original"
-'
-'        Case "è½»å°è¯´"
-'            oritype = "lightnovel"
-'
-'        Case Else
-'            oritype = "other"
-'    End Select
+    # staff ¸ñÊ½
+    while (odbc_fetch_row($rsstaff)) {
 
-    #æ˜ŸæœŸæ ¼å¼åŒ–
-    nrdate = Format(rsinfo("onair"), "mm/dd")
-    nrtime_start = Format(rstime("re_time_start"), "hh:nn")
-    nrtime_end = Format(rstime("re_time_end"), "hh:nn")
-    nrweekdays = Replace(WeekdayName(Weekday(rsinfo("onair"))), "æ˜ŸæœŸ", "æ¯å‘¨")
+        $position = odbc_result($rsstaff, "position");
+        $member   = odbc_result($rsstaff, "member");
 
-    # ç»„è£…å…¨æ–‡
+//        $nrstaff = $nrstaff . "['" . $member . "', '". $member . "', '" . $isshow . "'],\n";
+        $nrstaff = $nrstaff . "['" . $position . "', '". $member . "', '1'],\n";
+//        $rsstaff->Movenext();
+    };
 
-    alltext = alltext & Chr(13) & Chr(10) & _
-    "<!--" & nrdate & " " & WeekdayName(Weekday(rsinfo("onair"))) & " " & nrtime_start & " " & rsinfo("name") & "{{{1-->" & Chr(13) & Chr(10) & _
-    "<div id=" & Chr(34) & subname & Chr(34) & " class=" & Chr(34) & "animebox" & Chr(34) & ">" & Chr(13) & Chr(10) & _
-    "    <img src=" & Chr(34) & subname & ".png" & Chr(34) & " />" & Chr(13) & Chr(10) & _
-    "    <h2>" & rsinfo("name") & "</h2>" & Chr(13) & Chr(10) & _
-    "    <p>" & nrdate & "ã€€" & nrweekdays & "&nbsp;&nbsp;" & nrtime_start & "-" & nrtime_end & "</p>" & Chr(13) & Chr(10) & _
-    "</div> <!--}}}-->" & Chr(13) & Chr(10) & Chr(13) & Chr(10)
+    $nrstaff = substr($nrstaff, 0, -2);
 
-    outputcode = outputcode & animecode & Chr(13) & Chr(10)
-    i = i + 1 ' è®¡ç®—æ€»å…±è¾“å‡ºäº†å¤šå°‘éƒ¨åŠ¨ç”»èµ„æ–™ï¼Œé˜²æ­¢é—æ¼
-    guidecount = guidecount + 1
+    # cast ¸ñÊ½
+    while (odbc_fetch_row($rscast)) {
 
-    ' å…³é—­è®°å½•é›†
-    rssec.Close
-    rsinfo.Close
-    rstime.Close
+        $chara = odbc_result($rscast, "chara");
+        $cv    = odbc_result($rscast, "cv");
 
-    Set rssec = Nothing
-    Set rsinfo = Nothing
-    Set rstime = Nothing
+        $nrcast = $nrcast . "['" . $chara . "', '" . $cv . "', '1']\n";
+//        $rscast->Movenext();
+    }
 
-rsname.MoveNext
-Loop
+    $nrcast = substr($nrcast, 0, -2);
 
-' è¾“å‡ºç»“æœ
+    # ½éÉÜ¸ñÊ½
+    $nrcomment = odbc_result($rscomment, "comment");
 
-Me.artoutput.Value = alltext
-Me.outputcode.Value = outputcode
-Me.outputsta.Value = i & " éƒ¨"
+    $nrcomment = str_ireplace("'", "\\'", $nrcomment);
+    $nrcomment = str_ireplace("<p>", "'", $nrcomment);
+    $nrcomment = str_ireplace("</p>", "',\n", $nrcomment);
 
-' å…³é—­è¯»å–åŠ¨ç”»åç§°çš„è®°å½•é›†
-rsname.Close
-Set rsname = Nothing
+    $nrcomment = substr($nrcomment, 0, -2);
 
-*/
+    # ×é×°È«ÎÄ
+
+    $alltext = $alltext . <<<EOF
+    {'name': ['$subname', '$animename'],
+        'info':{
+            $nrinfo
+        },
+        'staff':[
+            $nrstaff
+        ],
+        'cast':[
+            $nrstaff
+        ],
+        'comment':[
+            $nrcomment
+        ]
+    },
+EOF;
+};
+
+# ¹Ø±Õ¶ÁÈ¡¶¯»­Ãû³ÆµÄ¼ÇÂ¼¼¯
+odbc_close($conn);
+
+echo substr($alltext, 0, -1);
+
 ?>
