@@ -175,5 +175,7 @@ odbc_close($conn);
 
 $alltext = "[" . substr($alltext, 0, -1) . "]";
 
-echo $alltext;
+echo "<script type=\"text/javascript\" >var json = " . $alltext . ";</script>";
+
+//echo $alltext;
 ?>
