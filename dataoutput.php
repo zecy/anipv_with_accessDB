@@ -10,7 +10,7 @@
 // Get Anime Name by Onair
 
 $conn = odbc_connect('animedb','','');
-$sql = "SELECT 动画基本信息.原名 as name, 动画基本信息.简称 as shrotname, 动画基本信息.anime_id as id, 动画基本信息.类型 as genre, 动画基本信息.时间 as oa FROM 动画基本信息 WHERE ((动画基本信息.时间) >= #2014/6/1# and (动画基本信息.时间) <= #2014/8/31#) ORDER BY 动画基本信息.时间";
+$sql = "SELECT 动画基本信息.原名 as name, 动画基本信息.简称 as shrotname, 动画基本信息.anime_id as id, 动画基本信息.类型 as genre, 动画基本信息.时间 as oa FROM 动画基本信息 WHERE ((动画基本信息.时间) >= #2014/9/30# and (动画基本信息.时间) <= #2014/10/31#) ORDER BY 动画基本信息.时间";
 $rs = odbc_exec($conn, $sql);
 
 #==========================================================================================
@@ -175,7 +175,7 @@ odbc_close($conn);
 
 $alltext = "[" . substr($alltext, 0, -1) . "]";
 
-echo "<script type=\"text/javascript\" >var json = " . $alltext . ";</script>";
+//echo "<script type=\"text/javascript\" >var json = " . $alltext . ";</script>";
 
 //echo $alltext;
 ?>

@@ -1,47 +1,52 @@
-<?php include 'dataoutput.php';?>
 <!doctype html>
 <html lang="en" ng-app="AnimeIntro">
 <head>
+   <meta charaset="UTF-8"></meta>
     <title>Get JSON</title>
     <link rel="stylesheet" href="anime/2014jul/css/style.css" />
+    <?php
+       include 'dataoutput.php';
+       $alltext = mb_convert_encoding($alltext,"UTF-8","GBK");
+       echo "<script type=\"text/javascript\" >var animeDataBase = " . $alltext . ";</script>";
+    ?>
+    <!--<script type="text/javascript"> var animeDataBase = json; </script>-->
     <script type="text/javascript" src="js/angular.min.js"></script>
-    <script type="text/javascript"> var animeDataBase = json; </script>
     <script type="text/javascript" src="anime/2014jul/js/control.js"></script>
 </head>
 <body ng-controller="animeBox">
 <header>
     <div class="headercontent">
 
-        <h1 id="hptitle">ZCµÄÐÂ·¬ÊÖ¼Ç</h1>
+        <h1 id="hptitle">ZCçš„æ–°ç•ªæ‰‹è®°</h1>
 
         <nav class="tab">
 
             <ul class="tab-nav clearfix">
                 <li class="pages-selector">
-                    ÏÔÊ¾¶¯»­ÊýÄ¿
+                    æ˜¾ç¤ºåŠ¨ç”»æ•°ç›®
 
                     <div class="selector">
 
                         <span class="trangle"></span>
 
-                        <h3>¹²ÓÐ {{ animeNumber }} ²¿¶¯»­£¬ÏÔÊ¾ {{ animeCurrentNumber }} ²¿</h3>
+                        <h3>å…±æœ‰ {{ animeNumber }} éƒ¨åŠ¨ç”»ï¼Œæ˜¾ç¤º {{ animeCurrentNumber }} éƒ¨</h3>
 
-                        <input type="text" ng-model="pageStart" placeholder="´ÓµÚN²¿¿ªÊ¼ÏÔÊ¾"/> - <input type="text" ng-model="pageEnd" placeholder="µ½µÚM²¿½áÊø"/>
-                        <button type="button" class="btn btn-default" ng-click="animeNumberInOnePage()">È·¶¨</button>
+                        <input type="text" ng-model="pageStart" placeholder="ä»Žç¬¬Néƒ¨å¼€å§‹æ˜¾ç¤º"/> - <input type="text" ng-model="pageEnd" placeholder="åˆ°ç¬¬Méƒ¨ç»“æŸ"/>
+                        <button type="button" class="btn btn-default" ng-click="animeNumberInOnePage()">ç¡®å®š</button>
 
                     </div>
 
                 </li>
 
                 <li class="origintype-selector">
-                    Ô­×÷ÀàÐÍ
+                    åŽŸä½œç±»åž‹
 
                     <div class="selector">
 
                         <span class="trangle"></span>
 
                         <ul class="property-list clearfix">
-                            <li ng-click="animeNumberInOnePage()">È«²¿ <span>{{animeNumber}}</span></li>
+                            <li ng-click="animeNumberInOnePage()">å…¨éƒ¨ <span>{{animeNumber}}</span></li>
                             <li ng-class="{'property-list-current' : origintype.name === currentName }"
                                 ng-repeat="origintype in countedOrigintype"
                                 ng-click="searchProperty(origintype.name, 'origintype')">
@@ -53,14 +58,14 @@
                 </li>
 
                 <li class="sequel-selector">
-                    ÊÇ·ñÐø×÷
+                    æ˜¯å¦ç»­ä½œ
 
                     <div class="selector">
 
                         <span class="trangle"></span>
 
                         <ul class="property-list clearfix">
-                            <li ng-click="animeNumberInOnePage()">È«²¿ <span>{{animeNumber}}</span></li>
+                            <li ng-click="animeNumberInOnePage()">å…¨éƒ¨ <span>{{animeNumber}}</span></li>
                             <li ng-class="{'property-list-current' : sequel.name === currentName }"
                                 ng-repeat="sequel in countedSequel" ng-click="searchProperty(sequel.name, 'sequel')">
                                 {{ sequel.name }}
@@ -72,14 +77,14 @@
                 </li>
 
                 <li class="onair-selector">
-                    ²¥·ÅÊ±¼ä
+                    æ’­æ”¾æ—¶é—´
 
                     <div class="selector">
 
                         <span class="trangle"></span>
 
                         <ul class="property-list clearfix">
-                            <li ng-click="animeNumberInOnePage()">È«²¿ <span>{{animeNumber}}</span></li>
+                            <li ng-click="animeNumberInOnePage()">å…¨éƒ¨ <span>{{animeNumber}}</span></li>
                             <li ng-show="onair" ng-class="{'property-list-current' : onair.name === currentName }" ng-repeat="onair in countedOnair | weekDays track by $index" ng-click="searchProperty(onair.name, 'onair')">
                                 {{ onair.name }}
                                 <span>{{ onair.number }}</span>
@@ -89,16 +94,16 @@
                 </li>
 
                 <li class="genre-selector">
-                    ÀàÐÍ
+                    ç±»åž‹
 
                     <div class="selector">
 
                         <span class="trangle"></span>
 
-                        <input type="text" ng-model="genreSearch.name" placeholder="²éÕÒÀàÐÍ"/>
+                        <input type="text" ng-model="genreSearch.name" placeholder="æŸ¥æ‰¾ç±»åž‹"/>
                         <ul class="property-list clearfix">
                             <li ng-click="animeNumberInOnePage()">
-                                È«²¿ <span>{{ animeNumber }}</span>
+                                å…¨éƒ¨ <span>{{ animeNumber }}</span>
                             </li>
                             <li ng-class="{'property-list-current' : genre.name === currentName }"
                                 ng-repeat="genre in countedGenre | filter: genreSearch"
@@ -117,13 +122,13 @@
 
                         <span class="trangle"></span>
 
-                        <input type="text" ng-model="staffSearch.name" placeholder="²éÕÒStaffÃû³Æ"/>
+                        <input type="text" ng-model="staffSearch.name" placeholder="æŸ¥æ‰¾Staffåç§°"/>
                         <input type="text"
                                ng-model="staffCountNum"
                                ng-change="changeCount('staff', staffCountNum)"
-                               placeholder="Í³¼ÆÏÂÏÞ"/>
+                               placeholder="ç»Ÿè®¡ä¸‹é™"/>
                         <ul class="property-list clearfix">
-                            <li ng-click="animeNumberInOnePage()">È«²¿ <span>{{ animeNumber }}</span></li>
+                            <li ng-click="animeNumberInOnePage()">å…¨éƒ¨ <span>{{ animeNumber }}</span></li>
                             <li ng-class="{'property-list-current' : staff.name === currentName }"
                                 ng-repeat="staff in countedStaff | filter:staffSearch"
                                 ng-click="searchProperty(staff.name, 'staff')">
@@ -141,13 +146,13 @@
 
                         <span class="trangle"></span>
 
-                        <input type="text" ng-model="castSearch.name" placeholder="²éÕÒCast"/>
+                        <input type="text" ng-model="castSearch.name" placeholder="æŸ¥æ‰¾Cast"/>
                         <input type="text"
                                ng-model="castCountNum"
                                ng-change="changeCount('cast', castCountNum)"
-                               placeholder="Í³¼ÆÏÂÏÞ"/>
+                               placeholder="ç»Ÿè®¡ä¸‹é™"/>
                         <ul class="property-list clearfix">
-                            <li ng-click="animeNumberInOnePage()">È«²¿ <span>{{ animeNumber }}</span></li>
+                            <li ng-click="animeNumberInOnePage()">å…¨éƒ¨ <span>{{ animeNumber }}</span></li>
                             <li ng-class="{'property-list-current' : cast.name === currentName }"
                                 ng-repeat="cast in countedCast | filter: castSearch"
                                 ng-click="searchProperty(cast.name, 'cast')">
@@ -166,87 +171,9 @@
 
 <div class="wrap">
 
-<div class="intro" >
-
-    <p>´ó¼ÒºÃ£¬ÎÒÊÇZC¡£»¹ÊÇ¹ßÀýµÄÃ¿¼¾¶ÈÐÂ·¬½éÉÜ¡£ÒòÎª¹¤×÷Ì«Ã¦£¬±¾¼¾ÅªÍê·¢³öÀ´µÄÊ±ºòÐÂ·¬»ù±¾¶¼ÒÑ¾­¿ª²¥ÁËOTL</p>
-    <p>±¾¼¾ËäÈ»²»Ïñ4ÔÂÈºÄ§ÂÒÎè£¬½éÉÜÐ´ÆðÀ´Ò²Ã»ÓÐÊ²Ã´¼¤Çé¡£²»¹ýÓÐÈ¤µÄ×÷Æ·»¹ÊÇÓÐ²»ÉÙ£¬ÎÒ×÷Îª¹ÛÖÚÀ´¿´µÄ»°ÊÇ±È4ÔÂÓÐ¿´Í·µÄÒ»¸ö¼¾¶È¡£</p>
-    <p>±¾¼¾ÐÂ·¬¹²45²¿£¬ÓÐÒ»²¿ÔÚÒôÀÖ½ÚÄ¿ÖÐ¼ä²¥·ÅµÄ¶ÌÆª¶¯»­¡¶¤Ë¤ã¤ó¤×¤¯¤Ë¤ã¤ë¤Þ£¨Ã¨¸£Ã¨´ïÄ¦£©¡·Ã»ÓÐËã£¬ËãÉÏÓ¦¸ÃÊÇ46²¿¡£</p>
-    <p>46²¿ÖÐ£¬ÐÂ×÷ÓÐ29²¿£¬Ðø×÷ÓÐ17²¿¡£Ðø×÷ÀïÃæ¡¶ÃÀÉÙÅ®Õ½Ê¿¡·ÊÇÍêÈ«ÖØÖÆ£¬¡¶×¥¿ñÒ»×å¡·ÊÇ16ÄêÇ°µÄÀÏÆ¬µÚ¶þ¼¾¡£</p>
-    <p>Ô­×÷À´Ô´·½Ãæ£¬Ô­´´¶¯»­¼ÌÐø»ØÎÂ£¬È«ÐÂ×÷ÓÐ5²¿¡£ÓÐÁ½²¿ÊÇ»úÆ÷ÈËÆ¬£º¡¶°×ÒøµÄÒâÖ¾¡·ºÍ¡¶ALDNOAH ZERO¡·£¬P.A.WorksµÄ·ç¾°Ð£Ô°NTR¡¶²£Á§Ö®ÂÃ¡·£¬¶É±ßÐÅÒ»ÀÉ¡ÁÝÑÒ°Ñó×ÓµÄ±©¿ÖÌâ²Ä¡¶¿Ö²ÀÓàÒô¡·£¬»¹ÓÐ¡¶ÃþË÷°É£¡²¿»î¾ç¡·ÍÅ¶ÓµÄ¡¶¼ûÏ°Å®Ö÷½Ç¡·¡£¶øÔ­´´×÷Æ·µÄÐø×÷·½ÃæÓÐ¡¶°µÖ¥¾Ó2¡·¡¶Space Dandy 2¡·ºÍ¡¶Re£º±õ»¢¡·¡£±È½Ï¿ÓµÄÊÇ¡¶Psycho-Pass¡·µÄÖØÐÂ¼ô¼­°æ£¬Õâ¸ö´¿´âÊÇÓÃÀ´Îª10ÔÂµÚ¶þ¼¾ºÍÖ®ºóµÄµçÓ°°æ×ö¸´Ï°Ô¤ÈÈµÄ£¬²»¹ýÖØÐÂ¼ô¼­×Ü±ÈÖØ²¥ÓÐ³ÏÒâ¡£</p>
-    <p>ÇáÐ¡Ëµ¸Ä±à×÷ÓÐ8²¿£¬³ýÁË¡¶»¨ÎïÓï¡·Õâ¸öÌØ±ðÆªËµ5ÔÂ²¥ÏÖÔÚÍÏµ½8ÔÂµÄÒÔÍâ£¬ÆäËû¼¸²¿¶¼ÊÇÕý³£³¤¶ÈµÄ×÷Æ·¡£Ðø×÷·½ÃæÊÇ±¾¼¾°ÔÈ¨ºò²¹¡¶SAO2¡·ºÍ¾©°¢ÄáµÄ¸¯Æ¬¡¶FreeµÚ¶þ¼¾¡·¡£Ê£ÏÂµÄ5²¿¶¼ÊÇÐÂ×÷£¬·Ö±ðÊÇ¡¶ÌúµÀÕ½Õù¡·¡¶ÈËÉú¡·¡¶ÌÒ½£¡·¡¶ÈýÆº·¿¼äµÄÇÖÂÔÕß¡·ºÍ¡¶¾«ÁéÊ¹µÄ½£Îè¡·¡£</p>
-    <p>»¹ÓÐÒ»²¿ÊÇÒ»°ãÐ¡Ëµ¸Ä±àµÄ¡¶ÉÙÄêºÃÀ³Îë¡·¡£ÆäÊµÒ²²»ËãÊÇ¸Ä±à£¬ÒòÎª¶¯»­µÄÄÚÈÝÊÇÔ­×÷ÕßÎª¶¯»­ÖØÐÂ´´×÷µÄ¡£</p>
-    <p>ÓÎÏ·¸Ä±àµÄ5²¿¡£¡¶Ä»Ä©Rock¡·¡¶DRAMAtical Murder¡·ÊÇÐÂ×÷£¬¡¶Pripara¡·ÊÇ°ë²¿ÐÂ×÷£¬¡¶Õ½¹úBasara Judge End¡·ºÍ¡¶Å®ÉñÒìÎÅÂ¼4 »Æ½ð°æ¡·ÔòÊÇÐø×÷¡£GALGAME¸Ä±à×÷ÒÑ¾­ºÃ¾ÃÃ»¿´µ½ÁËÄØ¡£</p>
-    <p>Âþ»­¸Ä±àÒÀÈ»ÊÇÖ÷Á÷£¬±¾¼¾¹²29²¿¡£</p>
-    <p>Ê£ÓàµÄ2²¿£¬1²¿ÊÇÒëÖÆÆ¬£¬µÏË¹ÄáµÄ¡¶Íæ¾ß×Ü¶¯Ô±Ö®¾ª»êÒ¹¡·£¬ÊÇÖ»ÓÐÒ»¼¯µÄÌØ±ðÆª¶¯»­£¬ÁíÍâÒ»¸öÊÇÎªÔ­´´½ÇÉ«ÖÆ×÷µÄ¶¯»­¡¶¸¥ÀÊÎ÷Ë¿¿¨¡·¡£</p>
-    <p>´óÖÂÈç´Ë¡£</p>
-    <p>¼ÈÈ»Ð´±¾ÎÄµÄÊ±ºòÐÂ·¬¶¼³öµÄ²î²»¶àÁË£¬Ò²¿´ÁËÒ»²¿·Ö£¬¾ÍÐ´Ò»ÏÂ¾ÃÎ¥µÄ¼òÆÀÒÔ¹©²Î¿¼°É£¬ÓÐ²¿·ÖÊÇ»¹Ã»³öµÄ£¬¾ÍÐ´µã¼ò½éºÃÁË¡£ÏêÏ¸µÄ×÷Æ·½éÉÜ»¹Çë¿´ÕýÎÄ¡£</p>
-    <p></p>
-    <p>Ê×ÏÈÊÇ»°Ìâ×÷£¬²»±Ø¶àÌáÁË£¬Ó¦¸Ã¶¼ÖªµÀ¡£</p>
-    <p>¡¶ÃÀÉÙÅ®Õ½Ê¿Crystal¡·£º¾­µä×÷Æ·ÖØÖÆ£¬ÃûÉùÔÚÍâ£¬ÊôÓÚÊÇÎÞÂÛºÃ»µ·´Õý×Ü»á¿´Ò»¼¯µÄ×÷Æ·¡£ÖÁÓÚÖÆ×÷ÔõÃ´Ñù¾Í¼ûÈÊ¼ûÖÇÁË¡£</p>
-    <p>¡¶SAO2¡·£ºÃ»Ì«¶àºÃËµµÄ£¬°ÔÈ¨ºò²¹×÷¡£</p>
-    <p>¡¶Free µÚ¶þ¼¾¡·£º¾©°¢ÄáµÄ¸¯Æ¬¡£</p>
-    <p>¡¶ALDNOAH ZERO¡·£º¤¢¤ª¤­¤¨¤¤¡ÁÐéÔ¨ÐþµÄÔ­´´»úÆ÷ÈË¶¯»­£¬Æ«ÕæÊµÏµµÄ¿Æ»ÃÕ½ÕùÌâ²Ä¡£ÖÆ×÷Ë®×¼ÉÏË¦¿ªÍ¬Àà×÷Æ·¡¶°×ÒøµÄÒâÖ¾¡·ºÃ¶à¡£²»¹ý´ÓµÚÒ»»°µÄÆÌµæÀ´¿´ºóÃæÉñ¹÷»¯¿ÉÄÜÐÔÍ¦¸ßµÄ¡£ËäÈ»²»ÖÁÓÚÏñ¡¶¸ïÃü»ú¡·Ò»ÑùÂÒÀ´£¬µ«ÊÇÎÒºÃÏñ¿´ÕæÊµÏµµÄÑ½¡­¡­</p>
-    <p></p>
-    <p>È»ºóÊÇ´¿Ð£Ô°Áµ°®ÀàµÄÁ½²¿¡£</p>
-    <p>¡¶²£Á§Ö®ÂÃ¡·£ºP.A.WorksµÄÔ­´´ÐÂ×÷£¬ÈËÎï¹ØÏµÄÇ½ÐÒ»¸öÂÒ£¬P.AÒÑ¾­±»¸ÔÌï´óÂè¾«ÉñÎÛÈ¾ÁË°É¡£</p>
-    <p>¡¶ÉÁË¸µÄÇà´º¡·£ºProduction I.GÖÆ×÷£¬Ô­×÷ÊÇÉÙÅ®Âþ»­£¬Ã»ÓÐ¡¶ºÃÏë¸æËßÄã¡·ÄÇÃ´ÉÁ£¬¶øÇÒ¶ÔÎ¸µÄËðº¦±È½Ï´ó¡£</p>
-    <p></p>
-    <p>Ææ»Ã+Õ½¶·+Ð£Ô°Áµ°®ÀàµÄ¡£</p>
-    <p>¡¶ÐÞÒµÄ§Å®è´è´ÃÈ¡·£ºÔ­×÷ÊÇ¡¶ì­ËÙÕ¬ÄÐ¡·×÷Õß¶É±ßº½´´×÷µÄÂþ»­£¬×ß´«Í³µÄÍõµÀÂ·Ïß£¬¶¯»­ÏßÌõ¸É¾»ÈËÎï¿´ÆðÀ´¸üË³ÑÛÁË£¡</p>
-    <p>¡¶ÈýÆº·¿¼äµÄÇÖÂÔÕß¡·£ºÔ­×÷ÊÇÇáÐ¡Ëµ£¬ÆÀ¼ÛÍ¦Î¢ÃîµÄ£¬ÓÐµãÁ½±ßµ¹£¬¾ßÌå¿ÉÒÔ¿´ÕýÎÄµÄ½éÉÜ¡£ËäÈ»µ¼ÑÝÊÇ´óÕÓÐÄ£¬Õâ¾ÍÊÇ¿´Í·¡£²»¹ý´ÓµÚÒ»»°À´¿´µÄ»°£ºÈÈÄÖÊÇÍ¦ÈÈÄÖ£¬µ«¸Ð¾õÍ¦Ò»°ãµÄ£¬È´ÁÁµã¡£¶ø¸Ä¾çÇéÊÇÃ»ÅÜÁË£¬ËäÈ»¾ç±¾ÓÐÔ­×÷Õß¼àÐÞ¾ÍÊÇÁË¡­¡­</p>
-    <p>¡¶¾«ÁéÊ¹µÄ½£Îè¡·£ºMFÎÄ¿âJ 5²¿¶¯»­»¯×÷Æ·µÄµ¹ÊýµÚËÄ²¿¡£Õâ5²¿×÷Æ·Ä¿Ç°×îÁîÈËÂúÒâµÄÊÇ¡¶No Game No Life¡·£¬¡¶ÐÇ¿ÌµÄÁúÆïÊ¿¡·ÈËÉè·ç¸ñ±äÌ«´óÃ»·¨ÈÌ¡£Õâ²¿ºÍ¡¶ÐÇ¿Ì¡·ÍêÈ«ÊÇÍ¬Àà×÷Æ·£¬Ö®ËùÒÔÓÐ¿´Í·£¬ÒòÎªÖÆ×÷StaffÊÇ¡¶DxD¡·°àµ×¡£</p>
-    <p></p>
-    <p>¶¯×÷¡¢Õ½¶·ÀàµÄ¡£</p>
-    <p>¡¶°×ÒøµÄÒâÖ¾¡·£ºÄÑÒÔÏëÏóµÄµÚÒ»»°¾ÍÀ´µÍ³É±¾ÖÆ×÷£¬Ó¦¸Ã²»ÖÁÓÚ¾­·Ñ²»¹»£¬»³ÒÉÊÇÖÆ×÷¹ÜÀí³öÊ²Ã´ÎÊÌâÁË¡£Íµ¹¤µÄºÛ¼£Ì«Ã÷ÏÔ£¬½Ú×àÍÏí³£¬²»ÊÇÖ±½Ó¿³ÁË¾ç±¾¾ÍÊÇÔÚ»­·Ö¾µµÄÊ±ºòÏ÷¼õÁËÄÚÈÝ£¬Òª²»¾ÍÊÇ»¹ÓÐ¿¨Ã»ÓÐÍê³É£¬¿ÉÒÔ¿´µ½²»ÉÙ¾µÍ·Ê±¼äÎÞÒâÒåµÄ³¤£¬¶øÇÒ±³¾°¾µÍ·ºÜ¶à¡£¹ÊÊÂÌ×Â·»¯µ½ÈÃÈËÎÞ·¨ÍÂ²Û£¬ÏÔÈ»ÊÇ¹ÊÒâÕâÑù°²ÅÅµÄ£¬ÖÁÓÚÊÇ±à¾çÍµÀÁ£¬»¹ÊÇÉÏ²ãµÄÒªÇóÎÞ´ÓµÃÖª¡£·´ÕýÔÚ¹ÊÊÂÉÏ¿´²»³öÓÐÊ²Ã´³ö²ÊµÄµØ·½¡£ÖÁÓÚÊÇÖÆ×÷Î¯Ô±»áÃ»¸ø¹»Ç®»¹ÊÇ×ö»úÆ÷ÈË½¨Ä£»¨ÁËÌ«¶àÇ®ÎÞ·¨µÃÖª¡£ÕâË®×¼±È¡¶ÂÖ»ØµÄÀ­¸ñÀÊÈÕ¡·²î¶àÁË¡£²»¹ý£¬±¾×÷µÄÎ¯Ô±»áÓÐºÃ¶à¼Ò¹«Ë¾Ö÷Ö÷ÒµÊÇ×öµçÓ°µÄ£¬Õâ¸öµçÊÓ¶¯»­¸Ã²»»áÖ»ÊÇ¶¯»­µçÓ°µÄÐû´«Æ¬£¬µçÓ°²ÅÊÇÕæÉí°É£¿ËäÈ»ÏÖÔÚ±¾×÷Ò²Ã»ÓÐ³öµçÓ°µÄÏûÏ¢£¬µ«ÊÇÍùºó¹«²¼ÁËÒ²²»Òª¾õµÃÆæ¹Ö¡£</p>
-    <p>¡¶Õ¶£¡³àºìÖ®Í«¡·£º±ãµ±ÃÍ·¢£¬Ò»¼¾¶ÈÖ®ºó²»ÖªµÀ»áËÀÊ£¼¸¸ö¡£µÚÒ»»°ÕûÌå²»´í£¬¹ÊÊÂ·½ÃæÓ¦¸Ã²»»áÓÐÊ²Ã´ÎÊÌâ£¬¿ÉÏ§¸ß³±²¿·ÖÑÝ³öÁ¦¶ÈÃ÷ÏÔ²»×ã£¬°¬Àöæ«Â¶³öÕæÃæÄ¿µÄÊ±ºòÈ±·¦³å»÷Á¦£¬ºÃºÃÒ»¸ö³¡¾°ÀË·ÑÁË£¬ÓÐµãÐ¡Ê§Íû¡£</p>
-    <p>¡¶¶«¾©Ê³Ê¬¹í¡·£º±ÈÆðÕ½¶·£¬¶ÔÈËÓë·ÇÈË¹ØÏµµÄË¼¿¼²ÅÊÇ±¾×÷µÄÁÁµã£¬´øÓÐÒ»¶¨µÄÏÖÊµ·í´ÌÐÔ¡£²»¹ý´ÓµÚÒ»»°À´¿´£¬½ðÄ¾µÄ¶¯Ò¡±íÏÖ»¹ÊÇÈ±·¦Ò»ÖÖ¾ö¶¨ÐÔµÄ³å»÷Á¦¡£</p>
-    <p>ÕâÁ½²¿¶¼ÊÇ×ß²Ð¿áÕ¹¿ªÂ·ÏßµÄ£¬±¾À´¶¼ÓÐËùÆÚ´ýµÄ£¬µ«ÊÇ×îÖÕ¶¼ÊÇÔÚ±íÏÖÁ¦ÉÏÎ´ÄÜÁîÈËÂúÒâÄØ¡£</p>
-    <p>¡¶¶«¾©ESP¡·£ºµÚÒ»»°¾Í°Ñ½á¾ÖÄÃ³öÀ´ÁËÍæÒ»ÏÂµ¹Ðð£¬¸Ð¾õÔÒÁË¼¸»°µÄ¾­·ÑÔÚÀïÃæÁË¡£¡¶Ê³Áé-Áã-¡·µÄºÛ¼£Ì«ÖØ£¬²»ÖªµÀÊÇÖÆÆ¬·½µÄÒªÇó»¹ÊÇStaff×ÔÉíÐÅÐÄ²»×ã»¹ÊÇÁ½Õß¶¼ÓÐ¡£Ä£·ÂÒ»ÏÂ¡¶Ê³Áé-Áã-¡·µÄµÚÒ»»°£¬»ÆÈªÉñÀÖÀ­³öÀ´¿Í´®Ò»ÏÂ£¬»¹ÓÐ¡¶Ê³Áé-Áã-¡·µÚÒ»»°µÄ±ãµ±Ð¡¶Ó£¨Õâ´ÎÃ»ÓÐËÀ£©£¬ÄÃË«µ¶µÄÃÀÄÎÊµÊÇ°´×Å»ÆÈªµÄµ÷µ÷À´ËÜÔìµÄ¡£ÄÐÖ÷½ÇµÚÒ»»°Ã»ÓÐµÇ³¡£¬Ò»Õû¸öÆäÊµÊÇÃÀÄÎÊµºÍÅ®Ö÷½Ç°®ºÞÇé³ðµÄ¸Ð¾õ¡£ÍùºóÊÇ¸ú×ÅÂþ»­ÅÜ»¹ÊÇ±à¾ç´ó±©×ß¾ÍÊÇ¿´µãÁË£¡</p>
-    <p>¡¶ÌÒ½£¡·£ºÒâÁÏÖ®ÖÐµÄÍõµÀÂ·Ïß×÷Æ·¡£²»¹ýËµºÃÌý¾ÍÍõµÀ£¬ËµÄÑÌý¾ÍÊÇÀÏÌ×ÁË£¬Ã»Ê²Ã´ÁÁµã¡­¡­</p>
-    <p>¡¶ÌúµÀÕ½Õù¡·£ºÌúÂ·Ìâ²ÄÊÇÓÐÐÂÒâ£¬µ«ÊÇÄÚÈÝºÍÑÝ³ö¶¼ºÜÆÕÍ¨£¬È±·¦ÁÁµã£¬Ã»Ì«¶à´æÔÚ¸Ð¡£</p>
-    <p></p>
-    <p>Å®ÐÔÏò¡¢BLÀà¡£</p>
-    <p>¡¶Love Stage¡·£ºÔ­×÷ÊÇÉÙÅ®Âþ»­£¬»­ÃæÏ¸ÖÂ»ªÀö£¬¸ù±¾ÊÇ»­¸öÅ®º¢×ÓËµÊÇÄÐµÄ¡£ºÁÎÞÑÚÊÎµÄÄÐÄÐ°®£¬ÈÃÈËÎÞ·¨Ö±ÊÓ¡£</p>
-    <p>¡¶DRAMAtical Murder¡·£ºÔ­×÷ÊÇ18½ûBL GAME¡­¡­±ÈÉÏÃæÄÇ²¿¸üÎÞ·¨Ö±ÊÓ¡£</p>
-    <p></p>
-    <p>ÃÈÏµÈÕ³£Ïµ¡£</p>
-    <p>¡¶»¨ÎèÉÙÅ®¡·£º´ò»­ÃæÅÆµÄ×÷Æ·¡£ËäÈ»ÈËÉè¾¡Á¿¸úÔ­×÷£¬µ«ÊÇÄÇ¸ö·ç¸ñËÆºõ²»ÔõÃ´ÊÊºÏ¶¯»­£¬¿´ÆðÀ´²»ÔõÃ´Ë³ÑÛ£¬ÌØ±ðÊÇÄÇ¸öÀâÐÎµÄÑÛ¾¦£¬¶àÓÃQ°æÃÖ²¹ÊÇ¸öË¼Â·¡£ÉÏÉ«ºÍÌØÐ§¶¼ÏÂ¹¦·òÁË£¬»­Ãæ¿´ÆðÀ´»¹ËãÆ¯ÁÁ¡£</p>
-    <p>¡¶Éú´æÓÎÏ·Éç¡·£ºÌ«ÌïÑÅÑåµ¼ÑÝ£¬ÐÅÐÄ±£Ö¤¡£ÊÇÊ±ºò½Ì½ÌGÉç×öÈÕ³£ÏµµÄµÀÀíÁË¡£</p>
-    <p>¡¶ÈËÉú¡·£ºÔ­×÷Ã»Ì«´óÒâË¼£¬¶¯»­Ò²ÊÇÒ»Ñù£¬ÓÐÖÖ¸ù±¾¾È²»»ØÀ´µÄ¸Ð¾õ¡£ÂôÃÈ¡¢É±±ØËÀ¶¼¾¡Á¦×öÁË£¬»¹ÊÇºÜÎÞÁ¦£¬ÊÇµ××ÓÌ«²îÁË°É¡£µ¼ÑÝÈç¹û·Å¿ªÀ´ÓÃ¡¶ÃÈµ¥¡·µÄ¸Ð¾õÀ´×ö·´¶ø»á¸üÓÐÈ¤¡£</p>
-    <p>¡¶¸ã¼§ÈÕ³£¡·£º»­¸öÅ®º¢×ÓÈ»ºóËµÊÇÄÐµÄ¡£</p>
-    <p></p>
-    <p>¸ãÐ¦Àà£¬Õâ¸ö¾Í²»±Ø¶àËµÁË£¬¶¼ÊÇÐø×÷£¬ÖªµÀµÄ¶¼ÖªµÀ¡£</p>
-    <p>¡¶¸ß´ïÉ£¡·£º½Ú²ÙÈ«ÎÞµÄÎÞÀåÍ·¸ãÐ¦×÷£¬ºÜ¿ÉÏ§Ö»ÊÇ¶ÌÆª¡£</p>
-    <p>¡¶ÔÂ¿¯ÉÙÅ®Ò°Æé¾ý¡·£ºµÃÒæÓÚÔ­×÷£¬Ïàµ±ÓÐÈ¤£¬»á¶¯µÄÇ§´ú±ÈÂþ»­¿É°®£¡µ«ÊÇ¸ãÐ¦Ð§¹û¸Ð¾õ±ÈÔ­×÷»¹ÊÇ²îÁËµã£¬¿ÉÄÜÊÇ¿´¹ýÔ­×÷Ôì³ÉµÄ´í¾õ£¿</p>
-    <p></p>
-    <p>Å¼ÏñÀà¡£</p>
-    <p>¡¶Pripara¡·£º¼Ì³Ð¡¶ÃÀÃîÐýÂÉ¡·ÏµÁÐÐÂÏµÁÐ¡£»ù±¾ÉÏºÍ¡¶ÃÀÃîÐýÂÉ¡·Ã»´ó²î±ð¡£</p>
-    <p>¡¶ÉÙÄêºÃÀ³Îë¡·£ºÔ­×÷ÊÇÐ¡Ëµ£¬¶¯»­ÊÇÔ­×÷ÕßÇ××ÔÖ´±ÊµÄÐÂ¹ÊÊÂ¡£ËäÈ»Ô­×÷²»ËãÊÇÅ®ÐÔÏòµÄ×÷Æ·£¬µ«ÊÇ¿´ÆðÀ´»¹ÓÐÓÐÖÖ»ùµÄ¸Ð¾õ¡­¡­</p>
-    <p>¡¶ÆÕÍ¨Å®¸ßÖÐÉúÒª×öµ±µØÅ¼Ïñ¡·£ºÆäÊµ¸üÏñÊÇÈÕ³£ÏµÇáÏ²¾ç¡£Ô­×÷ÊÇËÄ¸ñÂþ»­£¬¶¯»­ÓÐºÃºÃÐ´ÁËÍêÕûµÄ¹ÊÊÂ£¬ÕâµãÖµµÃ³ÆÔÞ¡£²»¹ýÌ«µ­ÁË£¬ÄÚÈÝÒ²ºÃ»­Ãæ±íÏÖÒ²ºÃ£¬È±·¦¸ß³±£¬ÒªËµÖÎÓúÏµµÄ»°ÒôÀÖÒ²Ã»×öµ½Î»¡£ÊôÓÚÅ¼¶û¿´¿´¸Ð¾õºÜ²»´í£¬µ«ÊÇÄÑÓÐÊ²Ã´¶¯Á¦×·µÄ×÷Æ·¡£</p>
-    <p></p>
-    <p>ÓÐ¼¼Êõ¸ïÐÂÒâÒåµÄ×÷Æ·Á½²¿¡£</p>
-    <p>¡¶ÐÅ³¤Ð­×àÇú¡·£º¸»Ê¿µçÊÓÌ¨ÔËÓÃ×ªÃè»ú¼¼Êõ×ÔÖ÷Ö®×÷µÄÈ«CG¶¯»­¡£´©Ô½Ìâ²Ä£¬¹ÊÊÂ»¹ËãÓÐÒâË¼£¬±³¾°ºÍÌØÐ§µÄCGÒÑ¾­×öµÃºÜ²»´íÁË£¬¿ÉÏ§3DÈËÎï²»ÁíÍâÎ¢µ÷¹ûÈ»Ð§¹û»¹ÊÇ²»ÐÐ¡£</p>
-    <p>¡¶¼ûÏ°Å®Ö÷½Ç¡·£ºÈÕ±¾µçÊÓ¶¯»­Ê·ÉÏµÚÒ»²¿¡°Ö±²¥¶¯»­¡±£¡</p>
-    <p></p>
-    <p>¹ÊÊÂÏòµÄ×÷Æ·¡£</p>
-    <p>¡¶¿Ö²ÀÓàÒô¡·£º±©¿ÖÌâ²ÄµÄÔ­´´¶¯»­£¬µÚÒ»¼¯¾Í·í´Ì¹«È¨»ú¹Ø¼æÕ¨ÁË¸ö´óÂ¥ÁË£¬Õâ¸ö¸Ã²»»á±ä³É½ûÆ¬°É¡­¡­</p>
-    <p>¡¶ÔªÆøàî×Ð¡·£º¸Ð¾õ²»´í£¬Ïç´åÇåÐÂÓÆÔÕµÄ·ÕÎ§ÓªÔìµÃ²»´í£¬¹ûÈ»ÊÇÓÐ¡¶ÓÆÓÆÊ½¡·µÄ³É¹¦¾­ÑéÔÚÀïÃæÄØ¡£²»¹ý±¾À´ÊÇÆÚ´ýÐ´Êé·¨µÄ²¿·Ö¿ÉÒÔÓÐ±ÈÂþ»­¸üÇ¿µÄ±íÏÖÁ¦µÄ£¬¿ÉÏ§²¢Ã»ÓÐÑÛÇ°Ò»ÁÁµÄ¸Ð¾õ¡£</p>
-    <p></p>
-    <p>²¿·ÖÐø×÷¡£</p>
-    <p>¡¶Space Dandy2¡·£º2ÆÚ·Ö¸îµÄºó°ë£¬ÒÀÈ»ÍæµÄºÜHigh£¡</p>
-    <p>¡¶Re£º±õ»¢¡·£º2ÆÚ·Ö¸îµÄºó°ë£¬µÚÒ»¼¾ÁôÁË¸ö´óÐüÄî¡£±¾¼¾°¶³Ï¶þµ£¸Ùµ±µ¼ÑÝÁË¡£</p>
-    <p>¡¶Å®ÉñÒìÎÅÂ¼4 »Æ½ð°æ¡·£º¹ÊÊÂÄÚÈÝÉÏºÍ¡¶Å®ÉñÒìÎÅÂ¼4¡·Ã»Ê²Ã´Çø±ð£¬²»¹ýµ¹ÊÇÈ«²¿ÖØÖÆÁË£¬Õ½¶·²¿·ÖÅªµÃ±ÈÖ®Ç°¿äÕÅÁËºÜ¶à£¬¶øÇÒ¼ÓÁËÏã²Ë¡£ÖØµã¹ûÈ»»¹ÊÇÏã²Ë°É¡­¡­</p>
-    <p>¡¶Ä§·¨ÉÙÅ®ÒÁÀûÑÇ2wei¡·£ºÐ¡ºÚµÇ³¡£¬²»ÄÜÔÙ°ô£¡</p>
-    <p>¡¶°µÖ¥¾Ó2¡·£º¹ãÊÜºÃÆÀÖ®ºóµÄµÚ¶þ¼¾¡£±¾¼¾ÕÒÁË¼¸¸ö¿Ö²ÀµçÓ°µ¼ÑÝÀ´¿Í´®£¬¿ÉÒÔÆÚ´ý¸ü°ôµÄÄÚÈÝ¡£²»¹ýµÚÒ»»°¿´ÆðÀ´²»ÔõÃ´¿Ö²ÀÄØ¡­¡­</p>
-    <p>¡¶ÏòÉ½½ø·¢ µÚ¶þ¼¾¡·£º±¾¼¾Ôö³¤Îª15·ÖÖÓÁ½¼¾¶ÈÁË£¬Èç¹ûÄÜÓÐµÚÈý¼¾ÓÐÍû±ä³É30·ÖÖÓÒ»¼¾¶ÈÄØ£¡</p>
-    <p>¡¶ÂþÑÐ²¿2¡·£º³öºõÒâÁÏµÄµÚ¶þ¼¾£¬ÒÀÈ»ÊÇÉñ¾­²¡Ê½ÎÞÀåÍ·¸ãÐ¦¡£</p>
-    <p>¡¶ÕæStrange Plus¡·£ºÍ¬ÑùÃ»Ïëµ½ÄÜÓÐµÚ¶þ¼¾£¬Ò²ÊÇÉñ¾­²¡Ê½ÎÞÀåÍ·¸ãÐ¦¡£²»¹ý±¾¼¾µ¼ÑÝ»»µôÁË£¬Ë®×¼ÄÜ²»ÄÜ±£³ÖÄØ¡£</p>
-
-</div>
-
 <div class="guide clearfix">
 
-    <h1 class="guide-title">2014ÄêÏÄ¼¾£¨7-9ÔÂ£©µçÊÓ¶¯»­ÐÂ×÷Ò»ÀÀ£¨1/2£©</h1>
+    <h1 class="guide-title">2014å¹´å¤å­£ï¼ˆ7-9æœˆï¼‰ç”µè§†åŠ¨ç”»æ–°ä½œä¸€è§ˆï¼ˆ1/2ï¼‰</h1>
 
     <!--<div ng-repeat="name in animeName " class="animebox">-->
     <div ng-repeat="anime in animeDataBase" class="animebox">
@@ -255,11 +182,11 @@
     </div>
 
 </div>
-<p class="copyright">ÕûÀí / ÖÆ×÷ by ZC @ http://anipv.info¡¡¡¡</p>
+<p class="copyright">æ•´ç† / åˆ¶ä½œ by ZC @ http://anipv.infoã€€ã€€</p>
 
 <!--
 
-    ÍøÂç·¢²¼ÓÃ
+    ç½‘ç»œå‘å¸ƒç”¨
 
 <div class="guide clearfix">
 
@@ -273,28 +200,28 @@
 <!-- For WebSite :: -->
 
  <div ng-repeat="anime in animeDataBase" class="animedetail">
-     <h2 id="{{ anime.name[0] }}" class="name">¡¶{{ anime.name[1] }}¡·</h2>
+     <h2 id="{{ anime.name[0] }}" class="name">ã€Š{{ anime.name[1] }}ã€‹</h2>
      <img ng-src="anime/2014jul/images/{{ anime.name[0] }}/poster.jpg" alt=""/>
 
-     <h3>»ù±¾ÐÅÏ¢</h3>
+     <h3>åŸºæœ¬ä¿¡æ¯</h3>
      <ul class="infobox">
          <li>
-             <dt>Ô­¡¡¡¡Ãû</dt><dd><span>{{ anime.info.origintitle[0] }}</span></dd>
+             <dt>åŽŸã€€ã€€å</dt><dd><span>{{ anime.info.origintitle[0] }}</span></dd>
          </li>
          <li>
-             <dt>Ô­×÷ÀàÐÍ</dt><dd><span>{{ anime.info.origintype[0] }}</span></dd>
+             <dt>åŽŸä½œç±»åž‹</dt><dd><span>{{ anime.info.origintype[0] }}</span></dd>
          </li>
          <li>
-             <dt>·ÅËÍÊ±¼ä</dt><dd><span>{{ anime.info.onair[0] }}</span></dd>
+             <dt>æ”¾é€æ—¶é—´</dt><dd><span>{{ anime.info.onair[0] }}</span></dd>
          </li>
          <li ng-show="anime.info.episodes[0]">
-             <dt>»°¡¡¡¡Êý</dt><dd><span>{{ anime.info.episodes[0] }}</span></dd>
+             <dt>è¯ã€€ã€€æ•°</dt><dd><span>{{ anime.info.episodes[0] }}</span></dd>
          </li>
          <li>
-             <dt>×÷Æ·ÀàÐÍ</dt><dd><span>{{ anime.info.genre[0] }}</span></dd>
+             <dt>ä½œå“ç±»åž‹</dt><dd><span>{{ anime.info.genre[0] }}</span></dd>
          </li>
          <li>
-             <dt>¹Ù·½ÍøÕ¾</dt><dd><span><a ng-href="{{ anime.info.hp[0] }}">{{ anime.info.hp[0] }}</a></span></dd>
+             <dt>å®˜æ–¹ç½‘ç«™</dt><dd><span><a ng-href="{{ anime.info.hp[0] }}">{{ anime.info.hp[0] }}</a></span></dd>
          </li>
      </ul>
 
@@ -314,7 +241,7 @@
          </li>
      </ul>
 
-     <h3>¼ò½é</h3>
+     <h3>ç®€ä»‹</h3>
      <div class="dialog">
          <p ng-repeat="comment in animeDataBase[$index].comment">{{ comment }}</p>
      </div>
@@ -325,24 +252,24 @@
 
 <pre ng-repeat="anime in animeDataBase" class="animedetail">
 
-[size=5]¡¶{{ anime.name[1] }}¡·[/size]
+[size=5]ã€Š{{ anime.name[1] }}ã€‹[/size]
 
 [img]http://anipv.info/blog/wp-content/themes/anipv/anime/2014jul/{{ anime.name[0] }}/poster.jpg[/img]
 
-[size=3][color=blue]¨„[/color]»ù±¾ÐÅÏ¢[/size]
+[size=3][color=blue]â–Œ[/color]åŸºæœ¬ä¿¡æ¯[/size]
 
-¡¡¡¡[b]Ô­¡¡¡¡Ãû£º[/b]{{ anime.info.origintitle[0] }}
-¡¡¡¡[b]Ô­×÷ÀàÐÍ£º[/b]{{ anime.info.origintype[0] }}
-¡¡¡¡[b]·ÅËÍÊ±¼ä£º[/b]{{ anime.info.onair[0] }}<p ng-show="anime.info.episodes[0]">¡¡¡¡[b]»°¡¡¡¡Êý£º[/b]{{ anime.info.episodes[0] }}<br /></p><p>¡¡¡¡[b]¹Ù·½ÍøÕ¾£º[/b]{{ anime.info.hp[0] }}</p>
-[size=3][color=blue]¨„[/color]Staff[/size]
+ã€€ã€€[b]åŽŸã€€ã€€åï¼š[/b]{{ anime.info.origintitle[0] }}
+ã€€ã€€[b]åŽŸä½œç±»åž‹ï¼š[/b]{{ anime.info.origintype[0] }}
+ã€€ã€€[b]æ”¾é€æ—¶é—´ï¼š[/b]{{ anime.info.onair[0] }}<p ng-show="anime.info.episodes[0]">ã€€ã€€[b]è¯ã€€ã€€æ•°ï¼š[/b]{{ anime.info.episodes[0] }}<br /></p><p>ã€€ã€€[b]å®˜æ–¹ç½‘ç«™ï¼š[/b]{{ anime.info.hp[0] }}</p>
+[size=3][color=blue]â–Œ[/color]Staff[/size]
 
-<p ng-repeat="staff in animeDataBase[$index].staff | hideItem">¡¡¡¡[b]{{ staff[0] }}£º[/b]{{ staff[1] }}</p>
-[size=3][color=blue]¨„[/color]Cast[/size]
+<p ng-repeat="staff in animeDataBase[$index].staff | hideItem">ã€€ã€€[b]{{ staff[0] }}ï¼š[/b]{{ staff[1] }}</p>
+[size=3][color=blue]â–Œ[/color]Cast[/size]
 
-<p ng-repeat="cast in animeDataBase[$index].cast | hideItem">¡¡¡¡[b]{{ cast[0] }}£º[/b]{{ cast[1] }}</p>
-[size=3][color=blue]¨„[/color]¼ò½é[/size]
+<p ng-repeat="cast in animeDataBase[$index].cast | hideItem">ã€€ã€€[b]{{ cast[0] }}ï¼š[/b]{{ cast[1] }}</p>
+[size=3][color=blue]â–Œ[/color]ç®€ä»‹[/size]
 
-<p ng-repeat="comment in animeDataBase[$index].comment">¡¡¡¡{{ comment }}</p>
+<p ng-repeat="comment in animeDataBase[$index].comment">ã€€ã€€{{ comment }}</p>
 </pre>
 -->
 
@@ -351,33 +278,33 @@
 <pre ng-repeat="anime in animeDataBase" class="animedetail">
 
 
-¡¶{{ anime.name[1] }}¡·
+ã€Š{{ anime.name[1] }}ã€‹
 
-Í¼
+å›¾
 
-¡¾»ù±¾ÐÅÏ¢¡¿
+ã€åŸºæœ¬ä¿¡æ¯ã€‘
 
-¡¡¡¡Ô­¡¡¡¡Ãû£º{{ anime.info.origintitle[0] }}
-¡¡¡¡Ô­×÷ÀàÐÍ£º{{ anime.info.origintype[0] }}
-¡¡¡¡·ÅËÍÊ±¼ä£º{{ anime.info.onair[0] }}
-¡¡¡¡<span ng-show="anime.info.episodes[0]">»°¡¡¡¡Êý£º{{ anime.info.episodes[0] }}</span>
-¡¡¡¡¹Ù·½ÍøÕ¾£º{{ anime.info.hp[0] }}
+ã€€ã€€åŽŸã€€ã€€åï¼š{{ anime.info.origintitle[0] }}
+ã€€ã€€åŽŸä½œç±»åž‹ï¼š{{ anime.info.origintype[0] }}
+ã€€ã€€æ”¾é€æ—¶é—´ï¼š{{ anime.info.onair[0] }}
+ã€€ã€€<span ng-show="anime.info.episodes[0]">è¯ã€€ã€€æ•°ï¼š{{ anime.info.episodes[0] }}</span>
+ã€€ã€€å®˜æ–¹ç½‘ç«™ï¼š{{ anime.info.hp[0] }}
 
-¡¾Staff¡¿
+ã€Staffã€‘
 
-<span ng-repeat="staff in animeDataBase[$index].staff | hideItem">¡¡¡¡{{ staff[0] }}£º{{ staff[1] }}<br/></span>
-¡¾Cast¡¿
+<span ng-repeat="staff in animeDataBase[$index].staff | hideItem">ã€€ã€€{{ staff[0] }}ï¼š{{ staff[1] }}<br/></span>
+ã€Castã€‘
 
-<span ng-repeat="cast in animeDataBase[$index].cast | hideItem">¡¡¡¡{{ cast[0] }}£º{{ cast[1] }}<br/></span>
-¡¾¼ò½é¡¿
+<span ng-repeat="cast in animeDataBase[$index].cast | hideItem">ã€€ã€€{{ cast[0] }}ï¼š{{ cast[1] }}<br/></span>
+ã€ç®€ä»‹ã€‘
 
-<span ng-repeat="comment in animeDataBase[$index].comment">¡¡¡¡{{ comment }}<br/></span>
+<span ng-repeat="comment in animeDataBase[$index].comment">ã€€ã€€{{ comment }}<br/></span>
 </pre>
 
 -->
 
 <div class="scrolltop">
-    <a href="#top">·µ»Ø¶¥²¿</a>
+    <a href="#top">è¿”å›žé¡¶éƒ¨</a>
 </div>
 
 </div>
